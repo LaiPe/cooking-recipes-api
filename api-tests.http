@@ -1,0 +1,265 @@
+### 🍳 API de Recettes de Cuisine - Tests HTTP
+### Base URL: http://localhost:8080
+
+### Variables communes
+@baseUrl = http://localhost:8080
+@contentType = application/json
+
+#####################
+### 📖 CRUD Recettes
+#####################
+
+### 1. Créer une recette - Pâtes à la tomate
+POST {{baseUrl}}/api/recipes
+Content-Type: {{contentType}}
+
+{
+  "title": "Pâtes à la tomate",
+  "description": "Un plat simple et rapide pour tous les jours",
+  "ingredients": ["pâtes", "tomates", "huile d'olive", "basilic", "parmesan"],
+  "tags": ["végétarien", "rapide", "italien"]
+}
+
+### 2. Créer une recette - Salade de quinoa
+POST {{baseUrl}}/api/recipes
+Content-Type: {{contentType}}
+
+{
+  "title": "Salade de quinoa",
+  "description": "Une salade fraîche et healthy",
+  "ingredients": ["quinoa", "tomates", "avocat", "citron", "huile d'olive"],
+  "tags": ["végétarien", "sans gluten", "healthy"]
+}
+
+### 3. Créer une recette - Risotto aux champignons
+POST {{baseUrl}}/api/recipes
+Content-Type: {{contentType}}
+
+{
+  "title": "Risotto aux champignons",
+  "description": "Un risotto crémeux aux champignons de saison",
+  "ingredients": ["riz arborio", "champignons", "bouillon de légumes", "parmesan", "vin blanc"],
+  "tags": ["végétarien", "italien", "champignons"]
+}
+
+### 4. Créer une recette - Soupe de lentilles
+POST {{baseUrl}}/api/recipes
+Content-Type: {{contentType}}
+
+{
+  "title": "Soupe de lentilles",
+  "description": "Une soupe nourrissante et réconfortante",
+  "ingredients": ["lentilles", "carottes", "oignons", "céleri", "bouillon de légumes"],
+  "tags": ["végétarien", "healthy", "hiver"]
+}
+
+### 5. Créer une recette - Curry de légumes
+POST {{baseUrl}}/api/recipes
+Content-Type: {{contentType}}
+
+{
+  "title": "Curry de légumes",
+  "description": "Un curry épicé avec des légumes de saison",
+  "ingredients": ["courgettes", "aubergines", "tomates", "lait de coco", "épices curry"],
+  "tags": ["végétarien", "épicé", "indien"]
+}
+
+### 6. Récupérer toutes les recettes
+GET {{baseUrl}}/api/recipes
+
+### 7. Récupérer une recette par ID (remplacez {id} par un ID réel)
+GET {{baseUrl}}/api/recipes/66f2a1234567890abcdef123
+
+### 8. Mettre à jour une recette (remplacez {id} par un ID réel)
+PUT {{baseUrl}}/api/recipes/66f2a1234567890abcdef123
+Content-Type: {{contentType}}
+
+{
+  "title": "Pâtes à la tomate - Version améliorée",
+  "description": "Un plat simple et rapide pour tous les jours, avec une touche d'ail",
+  "ingredients": ["pâtes", "tomates", "huile d'olive", "basilic", "parmesan", "ail"],
+  "tags": ["végétarien", "rapide", "italien", "ail"]
+}
+
+### 9. Supprimer une recette (remplacez {id} par un ID réel)
+DELETE {{baseUrl}}/api/recipes/66f2a1234567890abcdef123
+
+#########################
+### 🔍 Recherche Avancée
+#########################
+
+### 10. Rechercher par ingrédients disponibles (au moins un)
+GET {{baseUrl}}/api/recipes/search?ingredients=tomates&ingredients=huile d'olive
+
+### 11. Rechercher par tous les ingrédients requis
+GET {{baseUrl}}/api/recipes/search/all?ingredients=tomates&ingredients=pâtes
+
+### 12. Rechercher par tags
+GET {{baseUrl}}/api/recipes/tags?tags=végétarien
+
+### 13. Rechercher par plusieurs tags
+GET {{baseUrl}}/api/recipes/tags?tags=végétarien&tags=rapide
+
+### 14. Rechercher par titre
+GET {{baseUrl}}/api/recipes/search/title?title=pâtes
+
+### 15. Rechercher par mot-clé dans titre et description
+GET {{baseUrl}}/api/recipes/search/keyword?keyword=rapide
+
+### 16. Rechercher par un ingrédient spécifique
+GET {{baseUrl}}/api/recipes/search/ingredient?ingredient=tomates
+
+### 17. Rechercher par un tag spécifique
+GET {{baseUrl}}/api/recipes/search/tag?tag=italien
+
+##########################
+### 🧪 Tests de Validation
+##########################
+
+### 18. Test de validation - Titre manquant (doit échouer)
+POST {{baseUrl}}/api/recipes
+Content-Type: {{contentType}}
+
+{
+  "description": "Une recette sans titre",
+  "ingredients": ["ingrédient1", "ingrédient2"],
+  "tags": ["tag1"]
+}
+
+### 19. Test de validation - Ingrédients vides (doit échouer)
+POST {{baseUrl}}/api/recipes
+Content-Type: {{contentType}}
+
+{
+  "title": "Recette sans ingrédients",
+  "description": "Une recette sans ingrédients",
+  "ingredients": [],
+  "tags": ["tag1"]
+}
+
+### 20. Test de validation - Titre trop long (doit échouer)
+POST {{baseUrl}}/api/recipes
+Content-Type: {{contentType}}
+
+{
+  "title": "Ce titre est beaucoup trop long pour être accepté par la validation car il dépasse largement les 200 caractères autorisés par l'annotation @Size dans la classe Recipe et devrait donc provoquer une erreur de validation",
+  "description": "Une description normale",
+  "ingredients": ["ingrédient1"],
+  "tags": ["tag1"]
+}
+
+#############################
+### 🔄 Tests de Mise à jour
+#############################
+
+### 21. Mettre à jour une recette inexistante (doit retourner 404)
+PUT {{baseUrl}}/api/recipes/000000000000000000000000
+Content-Type: {{contentType}}
+
+{
+  "title": "Recette inexistante",
+  "description": "Cette recette n'existe pas",
+  "ingredients": ["ingrédient1"],
+  "tags": ["tag1"]
+}
+
+### 22. Supprimer une recette inexistante (doit retourner 404)
+DELETE {{baseUrl}}/api/recipes/000000000000000000000000
+
+### 23. Récupérer une recette inexistante (doit retourner 404)
+GET {{baseUrl}}/api/recipes/000000000000000000000000
+
+################################
+### 🎯 Recherches Spécialisées
+################################
+
+### 24. Rechercher toutes les recettes végétariennes
+GET {{baseUrl}}/api/recipes/search/tag?tag=végétarien
+
+### 25. Rechercher toutes les recettes rapides
+GET {{baseUrl}}/api/recipes/search/tag?tag=rapide
+
+### 26. Rechercher toutes les recettes sans gluten
+GET {{baseUrl}}/api/recipes/search/tag?tag=sans gluten
+
+### 27. Rechercher toutes les recettes italiennes
+GET {{baseUrl}}/api/recipes/search/tag?tag=italien
+
+### 28. Rechercher toutes les recettes avec des tomates
+GET {{baseUrl}}/api/recipes/search/ingredient?ingredient=tomates
+
+### 29. Rechercher toutes les recettes avec du parmesan
+GET {{baseUrl}}/api/recipes/search/ingredient?ingredient=parmesan
+
+### 30. Rechercher par mot-clé "healthy"
+GET {{baseUrl}}/api/recipes/search/keyword?keyword=healthy
+
+### 31. Rechercher par mot-clé "épicé"
+GET {{baseUrl}}/api/recipes/search/keyword?keyword=épicé
+
+################################
+### 🍽️ Scénarios d'usage réels
+################################
+
+### 32. Scénario: "J'ai des pâtes et des tomates, que puis-je faire ?"
+GET {{baseUrl}}/api/recipes/search?ingredients=pâtes&ingredients=tomates
+
+### 33. Scénario: "Je veux une recette végétarienne et rapide"
+GET {{baseUrl}}/api/recipes/tags?tags=végétarien&tags=rapide
+
+### 34. Scénario: "Je cherche quelque chose avec du quinoa"
+GET {{baseUrl}}/api/recipes/search/ingredient?ingredient=quinoa
+
+### 35. Scénario: "Je veux une recette d'hiver réconfortante"
+GET {{baseUrl}}/api/recipes/search/tag?tag=hiver
+
+### 36. Scénario: "Je cherche des recettes indiennes"
+GET {{baseUrl}}/api/recipes/search/tag?tag=indien
+
+### 37. Scénario: "Qu'est-ce que je peux faire avec mes champignons ?"
+GET {{baseUrl}}/api/recipes/search/ingredient?ingredient=champignons
+
+##################################
+### 📊 Tests de Performance/Volume
+##################################
+
+### 38. Recherche large - toutes les recettes avec huile d'olive
+GET {{baseUrl}}/api/recipes/search/ingredient?ingredient=huile d'olive
+
+### 39. Recherche large - toutes les recettes avec plusieurs ingrédients courants
+GET {{baseUrl}}/api/recipes/search?ingredients=tomates&ingredients=huile d'olive&ingredients=oignons
+
+### 40. Vérification du nombre total de recettes
+GET {{baseUrl}}/api/recipes
+
+#########################################
+### 💡 Exemples de réponses attendues
+#########################################
+
+### Exemple de réponse pour GET /api/recipes:
+# [
+#   {
+#     "id": "66f2a1234567890abcdef123",
+#     "title": "Pâtes à la tomate",
+#     "description": "Un plat simple et rapide pour tous les jours",
+#     "ingredients": ["pâtes", "tomates", "huile d'olive", "basilic", "parmesan"],
+#     "tags": ["végétarien", "rapide", "italien"]
+#   }
+# ]
+
+### Exemple de réponse pour POST /api/recipes (création réussie):
+# {
+#   "id": "66f2a1234567890abcdef123",
+#   "title": "Pâtes à la tomate",
+#   "description": "Un plat simple et rapide pour tous les jours",
+#   "ingredients": ["pâtes", "tomates", "huile d'olive", "basilic", "parmesan"],
+#   "tags": ["végétarien", "rapide", "italien"]
+# }
+
+### Codes de statut HTTP attendus:
+# 200 - OK (GET, PUT réussis)
+# 201 - Created (POST réussi)
+# 204 - No Content (DELETE réussi)
+# 400 - Bad Request (données invalides)
+# 404 - Not Found (ressource inexistante)
+# 409 - Conflict (titre de recette déjà existant)
