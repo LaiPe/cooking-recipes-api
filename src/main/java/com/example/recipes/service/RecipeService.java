@@ -2,7 +2,7 @@ package com.example.recipes.service;
 
 import com.example.recipes.model.Recipe;
 import com.example.recipes.repository.RecipeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,16 +10,13 @@ import java.util.Optional;
 
 /**
  * Service contenant la logique métier pour les recettes
+ * Utilise @RequiredArgsConstructor de Lombok pour l'injection de dépendances
  */
 @Service
+@RequiredArgsConstructor
 public class RecipeService {
 
     private final RecipeRepository recipeRepository;
-
-    @Autowired
-    public RecipeService(RecipeRepository recipeRepository) {
-        this.recipeRepository = recipeRepository;
-    }
 
     /**
      * Récupère toutes les recettes

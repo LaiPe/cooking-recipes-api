@@ -3,7 +3,7 @@ package com.example.recipes.controller;
 import com.example.recipes.model.Recipe;
 import com.example.recipes.service.RecipeService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,18 +13,15 @@ import java.util.Optional;
 
 /**
  * Contrôleur REST pour les opérations sur les recettes
+ * Utilise @RequiredArgsConstructor de Lombok pour l'injection de dépendances
  */
 @RestController
 @RequestMapping("/api/recipes")
 @CrossOrigin(origins = "*") // Permet les requêtes cross-origin pour le développement
+@RequiredArgsConstructor
 public class RecipeController {
 
     private final RecipeService recipeService;
-
-    @Autowired
-    public RecipeController(RecipeService recipeService) {
-        this.recipeService = recipeService;
-    }
 
     /**
      * Récupère toutes les recettes
